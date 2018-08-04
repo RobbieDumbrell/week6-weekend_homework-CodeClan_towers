@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -55,27 +57,46 @@ public class HotelTest {
         assertEquals("CodeClan Towers", codeClanTowers.getName());
     }
 
-//    @Test
-//    public void startsWithNoRooms(){
-//        assertEquals(0, codeClanTowers.getRooms().size());
-//    }
+    @Test
+    public void hasRooms(){
+        assertEquals(3, codeClanTowers.getAllRooms().size());
+    }
+
+    @Test
+    public void canGetAllRoomsOfACategory(){
+        assertEquals(1, codeClanTowers.getCategoryRooms("Dining Rooms").size());
+        assertEquals(2, codeClanTowers.getCategoryRooms("Bedrooms").size());
+    }
+
+    @Test
+    public void canGetAllRoomCategories(){
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("Dining Rooms");
+        expected.add("Bedrooms");
+        expected.add("Conference Rooms");
+        assertEquals(expected, codeClanTowers.getRoomCategories());
+    }
 
     @Test
     public void canAddRoomCategory(){
-        codeClanTowers.addRoomCategory("Bedrooms");
-        codeClanTowers.addRoomCategory("Conference Rooms");
-        codeClanTowers.addRoomCategory("Dining Rooms");
-        assertEquals(3, codeClanTowers.getRooms().size());
+        codeClanTowers.addRoomCategory("Test");
+        assertEquals(4, codeClanTowers.getAllRooms().size());
     }
 
     @Test
     public void canAddRoomToHotel(){
         codeClanTowers.addRoom("Bedrooms", twinBedroom);
-        ArrayList<Room> expectedRooms = new ArrayList<Room>();
+        ArrayList<Room> expectedRooms = new ArrayList<>();
         expectedRooms.add(suiteBedroom);
         expectedRooms.add(singleBedroom);
         expectedRooms.add(twinBedroom);
-        assertEquals(expectedRooms, codeClanTowers.getRooms().get("Bedrooms"));
+        assertEquals(expectedRooms, codeClanTowers.getAllRooms().get("Bedrooms"));
+    }
+
+    @Test
+    public void canNotAddRoomToHotelWithInvalidCategory(){
+        codeClanTowers.addRoom("BlahBlah", twinBedroom);
+        assertEquals(3, codeClanTowers.getAllRooms().size());
     }
 
     @Test
@@ -88,6 +109,13 @@ public class HotelTest {
     public void canNotCheckInGuestToRoomNotInHotel(){
         codeClanTowers.checkInGuest(ellie, "Bedrooms", twinBedroom);
         assertEquals(0, twinBedroom.guestCount());
+    }
+
+    @Test
+    public void canNotCheckInGuestTwiceToSameRoom(){
+        codeClanTowers.checkInGuest(ellie, "Bedrooms", suiteBedroom);
+        codeClanTowers.checkInGuest(ellie, "Bedrooms", suiteBedroom);
+        assertEquals(1, suiteBedroom.guestCount());
     }
 
     @Test
@@ -124,4 +152,5 @@ public class HotelTest {
         expectedRooms.add(singleBedroom);
         assertEquals(expectedRooms, codeClanTowers.listEmptyRooms("Bedrooms"));
     }
+
 }

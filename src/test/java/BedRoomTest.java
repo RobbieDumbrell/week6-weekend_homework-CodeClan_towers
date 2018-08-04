@@ -33,6 +33,11 @@ public class BedRoomTest {
     }
 
     @Test
+    public void hasTypeDescription(){
+        assertEquals("Single Room", singleBedroom.getType().getDescription());
+    }
+
+    @Test
     public void startsWithZeroGuests(){
         assertEquals(0, doubleBedroom.guestCount());
     }
