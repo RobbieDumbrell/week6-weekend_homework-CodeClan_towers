@@ -30,7 +30,7 @@ public class Hotel {
     }
 
     public ArrayList<String> getRoomCategories() {
-        ArrayList<String> categoriesList = new ArrayList<String>(rooms.keySet());
+        ArrayList<String> categoriesList = new ArrayList<>(rooms.keySet());
         return categoriesList;
     }
 
